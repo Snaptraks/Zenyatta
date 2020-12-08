@@ -26,7 +26,8 @@ class SeaofThieves(commands.Cog):
         """Gather mateys to sail the Sea of Thieves!"""
 
         all_chat = itertools.chain.from_iterable(self.chat_wheel.values())
-        valid_chats = set([x for x in all_chat if len(x.split()) > 1])
+        valid_ends = (".", "!", "?", "*")
+        valid_chats = set([x for x in all_chat if x.endswith(valid_ends)])
         if ctx.author.id == 242465567259230208:  # Elerinna
             random_chat = f":rainbow: {self.chat_wheel['alerts'][-1]}"
         else:
