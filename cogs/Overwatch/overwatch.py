@@ -1,10 +1,3 @@
-"""
-This Cog is mostly for the Discord server I have with friends I play
-Overwatch with. It isn't used on the Hatventures Community server but I
-share it nonetheless. Some features will not make sense to you, but the
-technical stuff is interesting enough that it deserves a look at.
-"""
-
 import json
 import numpy as np
 import pickle
