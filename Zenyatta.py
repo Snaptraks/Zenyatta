@@ -73,6 +73,7 @@ if __name__ == '__main__':
     startup_extensions = [
         "cogs.Overwatch",
         "cogs.SeaofThieves",
+        "cogs.General",
     ]
 
     for extension in startup_extensions:
