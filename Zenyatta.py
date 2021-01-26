@@ -61,12 +61,14 @@ class Zenyatta(commands.Bot):
 
 if __name__ == '__main__':
     intents = discord.Intents.all()
+    allowed_mentions = discord.AllowedMentions(replied_user=False)
 
     bot = Zenyatta(
         description='One cannot survive on strength alone.',
         command_prefix='!',
         help_command=commands.DefaultHelpCommand(dm_help=False),
         intents=intents,
+        allowed_mentions=allowed_mentions,
         db_name='db/Zenyatta.db',
     )
 
