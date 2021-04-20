@@ -1,3 +1,4 @@
+from collections import defaultdict
 import itertools
 import json
 import os
@@ -17,6 +18,7 @@ class SeaofThieves(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.pirate_role = defaultdict(lambda: None)
 
         with open(os.path.join(COG_PATH, "chat_wheel.json")) as f:
             self.chat_wheel = json.load(f)
@@ -24,6 +26,10 @@ class SeaofThieves(commands.Cog):
     @commands.command(aliases=["yar"])
     async def yarr(self, ctx):
         """Gather mateys to sail the Sea of Thieves!"""
+
+        if self.pirate_role[ctx.guild.id] is None:
+            self.pirate_role[ctx.guild.id] = discord.utils.get(
+                ctx.guild.roles, name="Pirate")
 
         all_chat = itertools.chain.from_iterable(self.chat_wheel.values())
         valid_ends = (".", "!", "?", "*")
@@ -47,3 +53,4 @@ class SeaofThieves(commands.Cog):
         )
 
         await ctx.send(embed=embed)
+        await ctx.send(self.pirate_role[ctx.guild.id].mention, embed=embed)
