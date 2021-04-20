@@ -51,7 +51,7 @@ class YarrMenu(menus.Menu):
             embed=embed,
         )
 
-    @menus.button(SKULL)
+    @menus.button(SEAOFTHEIVES_EMOJI)
     async def on_confirm(self, payload):
         """Register for the Sea of Thieves session."""
 
