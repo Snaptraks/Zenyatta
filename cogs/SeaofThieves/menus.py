@@ -4,7 +4,7 @@ import os
 import random
 
 import discord
-from discord.ext import menus
+from discord.ext import commands, menus
 from ..utils.gifs import random_gif
 
 
@@ -82,6 +82,9 @@ class YarrMenu(menus.Menu):
 
         crew_list = "\n".join([m.mention for m in self.crew])
 
+        converter = commands.EmojiConverter()
+        emoji = await converter.convert(self.ctx, SEAOFTHEIVES_EMOJI)
+
         embed = discord.Embed(
             description=description,
             color=EMBED_COLOR,
@@ -92,6 +95,9 @@ class YarrMenu(menus.Menu):
         ).add_field(
             name="Crew",
             value=crew_list if crew_list else "No matey",
+        ).set_footer(
+            text="React to confirm your presence.",
+            icon_url=emoji.url,
         )
 
         return embed
