@@ -13,7 +13,7 @@ class SeaofThieves(commands.Cog):
         self.pirate_role = defaultdict(lambda: None)
 
     @commands.command(aliases=["yar"])
-    async def yarr(self, ctx, crew: int = 1):
+    async def yarr(self, ctx):
         """Gather mateys to sail the Sea of Thieves!"""
 
         if self.pirate_role[ctx.guild.id] is None:
