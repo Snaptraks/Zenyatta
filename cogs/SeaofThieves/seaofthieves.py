@@ -22,6 +22,7 @@ class SeaofThieves(commands.Cog):
             if role is None:
                 role = ctx.guild.default_role
             self.pirate_role[ctx.guild.id] = role
+
         menu = menus.YarrMenu(
             timeout=None,
             pirate_role=self.pirate_role[ctx.guild.id],

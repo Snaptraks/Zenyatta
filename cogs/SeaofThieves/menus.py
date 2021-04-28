@@ -76,11 +76,13 @@ class YarrMenu(menus.Menu):
         """Build the Embed with the new data."""
 
         description = (
-            f"**{self.random_chat}**\n{self.ctx.author.mention} sails today, "
-            "join in on the plunder!"
+            f"**{self.random_chat}**\n"
+            f"{self.ctx.author.display_name} ({self.ctx.author.mention}) "
+            "sails today, join in on the plunder!"
         )
 
-        crew_list = "\n".join([m.mention for m in self.crew])
+        crew_list = "\n".join([f"{m.display_name} ({m.mention})"
+                               for m in self.crew])
 
         converter = commands.EmojiConverter()
         emoji = await converter.convert(self.ctx, SEAOFTHEIVES_EMOJI)
