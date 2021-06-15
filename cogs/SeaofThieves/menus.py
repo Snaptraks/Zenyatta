@@ -35,7 +35,7 @@ class YarrMenu(menus.Menu):
 
     async def send_initial_message(self, ctx, channel):
 
-        self.gif_url = await random_gif(self.bot.http_session, "pirate")
+        self.gif_url = await random_gif(self.bot.http_session, "sea of thieves")
 
         all_chat = itertools.chain.from_iterable(CHAT_WHEEL.values())
         valid_ends = (".", "!", "?", "*")

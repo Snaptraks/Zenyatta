@@ -9,12 +9,11 @@ async def random_gif(http_session, query):
     params = {
         "q": query,
         "limit": limit,
-        "pos": limit * random.randint(0, 10),
         "media_filter": "minimal",
         "contentfilter": "high",
         "locale": "en",
     }
-    resp = await _tenor_endpoint(http_session, "search", params)
+    resp = await _tenor_endpoint(http_session, "random", params)
     resp = resp['results']
     random_gif = random.choice(resp)
     gif_url = random_gif['media'][0]['gif']['url']
