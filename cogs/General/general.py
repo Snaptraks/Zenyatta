@@ -45,7 +45,10 @@ class General(commands.Cog):
 
         if confirmed:
             # get roles
-            grandmaster_role = ctx.guild.get_role(GRANDMASTER_ROLE_ID)
+            for role_id in GRANDMASTER_ROLE_ID:
+                grandmaster_role = ctx.guild.get_role(role_id)
+                if grandmaster_role is not None:
+                    break
             everyone = ctx.guild.default_role
 
             # create new role
@@ -83,7 +86,7 @@ class General(commands.Cog):
 
             content = (
                 f"Done! See you in {text_channel.mention} "
-                f"and :speaker: {voice_channel.mention}! "
+                f"and {voice_channel.mention}! "
                 "You might want to move the category in the channels list..."
             )
 
