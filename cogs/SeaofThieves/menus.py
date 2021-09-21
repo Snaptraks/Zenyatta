@@ -13,7 +13,7 @@ COG_PATH = os.path.dirname(__file__)
 with open(os.path.join(COG_PATH, "chat_wheel.json")) as f:
     CHAT_WHEEL = json.load(f)
 
-SEAOFTHEIVES_EMOJI = "<:seaofthieves:788880548369006603>"
+SEA_OF_THEIVES_EMOJI = "<:sea_of_thieves:788880548369006603>"
 SKULL = "\N{SKULL AND CROSSBONES}"
 EMBED_COLOR = 0x2C8C77
 SHIP_THUMBNAILS = {
@@ -51,7 +51,7 @@ class YarrMenu(menus.Menu):
             embed=embed,
         )
 
-    @menus.button(SEAOFTHEIVES_EMOJI)
+    @menus.button(SEA_OF_THEIVES_EMOJI)
     async def on_confirm(self, payload):
         """Register for the Sea of Thieves session."""
 
@@ -85,7 +85,7 @@ class YarrMenu(menus.Menu):
                                for m in self.crew])
 
         converter = commands.EmojiConverter()
-        emoji = await converter.convert(self.ctx, SEAOFTHEIVES_EMOJI)
+        emoji = await converter.convert(self.ctx, SEA_OF_THEIVES_EMOJI)
 
         embed = discord.Embed(
             description=description,
