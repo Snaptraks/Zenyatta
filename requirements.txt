@@ -1,5 +1,5 @@
 aiosqlite==0.17.0
 discord.py==1.7.3
 git+git://github.com/Rapptz/discord-ext-menus.git
-numpy==1.22.2
+numpy==1.22.3
 Pillow==9.0.1
