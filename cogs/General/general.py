@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-from . import menus
+# from . import menus
 
 
 GRANDMASTER_ROLE_ID = [
@@ -38,7 +38,7 @@ class General(commands.Cog):
                 f"and a role **@{role_name}**.\n"
                 "Is this what you want?"
             ),
-            color=discord.Color.blurple()
+            color=discord.Color.blurple(),
         )
         menu = menus.ConfirmMenu(embed=embed)
         confirmed = await menu.prompt(ctx)
@@ -52,37 +52,23 @@ class General(commands.Cog):
             everyone = ctx.guild.default_role
 
             # create new role
-            role = await ctx.guild.create_role(
-                name=role_name,
-                mentionable=True,
-            )
+            role = await ctx.guild.create_role(name=role_name, mentionable=True,)
 
             # create permissions
             overwrites = {
-                grandmaster_role: discord.PermissionOverwrite(
-                    read_messages=True,
-                ),
-                role: discord.PermissionOverwrite(
-                    read_messages=True,
-                ),
-                everyone: discord.PermissionOverwrite(
-                    read_messages=False,
-                ),
+                grandmaster_role: discord.PermissionOverwrite(read_messages=True,),
+                role: discord.PermissionOverwrite(read_messages=True,),
+                everyone: discord.PermissionOverwrite(read_messages=False,),
             }
 
             # create the category
             category = await ctx.guild.create_category_channel(
-                category_name,
-                overwrites=overwrites,
+                category_name, overwrites=overwrites,
             )
 
             # create the channels
-            text_channel = await category.create_text_channel(
-                text_channel_name,
-            )
-            voice_channel = await category.create_voice_channel(
-                voice_channel_name,
-            )
+            text_channel = await category.create_text_channel(text_channel_name,)
+            voice_channel = await category.create_voice_channel(voice_channel_name,)
 
             content = (
                 f"Done! See you in {text_channel.mention} "
@@ -96,13 +82,13 @@ class General(commands.Cog):
     async def create_error(self, ctx, error):
         """Error handler for the create command."""
 
-        if isinstance(error, (commands.NoPrivateMessage,
-                              commands.BotMissingPermissions)):
+        if isinstance(
+            error, (commands.NoPrivateMessage, commands.BotMissingPermissions)
+        ):
             await ctx.send(error)
 
         elif isinstance(error, commands.MissingAnyRole):
-            await ctx.send(
-                "You are missing a required role to run this command.")
+            await ctx.send("You are missing a required role to run this command.")
 
         else:
             raise error

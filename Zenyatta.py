@@ -1,37 +1,25 @@
+import asyncio
+from datetime import datetime
+
 import aiosqlite
 import aiohttp
-from datetime import datetime
 import discord
 from discord.ext import commands
 
 import config
 
 
-async def create_http_session(loop):
-    """Create an async HTTP session. Required to be from an async function
-    by aiohttp>=3.5.4
-    """
-    return aiohttp.ClientSession(loop=loop)
-
-
-async def create_db_connection(db_name):
-    """Create the connection to the database."""
-
-    return await aiosqlite.connect(
-        db_name, detect_types=1)  # 1: parse declared types
-
-
 class Zenyatta(commands.Bot):
     def __init__(self, *args, **kwargs):
+        self.db_name = kwargs.get("db_name", ":memory:")
         super().__init__(*args, **kwargs)
 
+    async def setup_hook(self):
         # Create HTTP session
-        self.http_session = self.loop.run_until_complete(
-            create_http_session(self.loop))
+        self.http_session = aiohttp.ClientSession()
 
         # Make DB connection
-        self.db = self.loop.run_until_complete(
-            create_db_connection(kwargs.get('db_name', ':memory:')))
+        self.db = await aiosqlite.connect(self.db_name, detect_types=1)
         # allow for name-based access of data columns
         self.db.row_factory = aiosqlite.Row
 
@@ -46,8 +34,7 @@ class Zenyatta(commands.Bot):
 
     async def on_ready(self):
         permissions = discord.Permissions(permissions=67584)
-        oauth_url = discord.utils.oauth_url(
-            self.user.id, permissions=permissions)
+        oauth_url = discord.utils.oauth_url(self.user.id, permissions=permissions)
         print(
             f"Logged in as {self.user.name} (ID:{self.user.id})\n"
             "--------\n"
@@ -59,17 +46,17 @@ class Zenyatta(commands.Bot):
         )
 
 
-if __name__ == '__main__':
+async def main():
     intents = discord.Intents.all()
     allowed_mentions = discord.AllowedMentions(replied_user=False)
 
     bot = Zenyatta(
-        description='One cannot survive on strength alone.',
-        command_prefix='!',
+        description="One cannot survive on strength alone.",
+        command_prefix="!",
         help_command=commands.DefaultHelpCommand(dm_help=False),
         intents=intents,
         allowed_mentions=allowed_mentions,
-        db_name='db/Zenyatta.db',
+        db_name="db/Zenyatta.db",
     )
 
     startup_extensions = [
@@ -79,11 +66,18 @@ if __name__ == '__main__':
         "cogs.Fun",
     ]
 
-    for extension in startup_extensions:
-        try:
-            bot.load_extension(extension)
-        except Exception as e:
-            exc = '{}: {}'.format(type(e).__name__, e)
-            print('Failed to load extension {}\n{}'.format(extension, exc))
+    async with bot:
+        for extension in startup_extensions:
+            try:
+                print(f"Loading extension {extension}... ", end="")
+                await bot.load_extension(extension)
+            except Exception as e:
+                exc = "{}: {}".format(type(e).__name__, e)
+                print("Failed to load extension {}\n{}".format(extension, exc))
+            else:
+                print("Extension loaded successfully.")
+        await bot.start(config.snapbot_token)
 
-    bot.run(config.token)
+
+if __name__ == "__main__":
+    asyncio.run(main())
