@@ -11,8 +11,9 @@ from discord.ui import View, Button
 with open(Path(__file__).parent / "chat_wheel.json") as f:
     CHAT_WHEEL = json.load(f)
 
-SEA_OF_THEIVES_EMOJI = "<:sea_of_thieves:788880548369006603>"
-SKULL = "\N{SKULL AND CROSSBONES}"
+SEA_OF_THEIVES_EMOJI = discord.PartialEmoji.from_str(
+    "<:sea_of_thieves:788880548369006603>"
+)
 EMBED_COLOR = 0x2C8C77
 SHIP_THUMBNAILS = {
     0: "https://i.imgur.com/32ETrPN.png",  # rowboat
@@ -32,9 +33,11 @@ def random_chat_wheel():
 
 class YarrAddButton(Button):
     def __init__(self, *args, **kwargs):
-        kwargs["style"] = ButtonStyle.blurple
-        kwargs["label"] = "Aye aye cap'n!"
-        super().__init__(*args, **kwargs)
+        super().__init__(
+            style=ButtonStyle.blurple,
+            emoji=SEA_OF_THEIVES_EMOJI,
+            label="Aye aye cap'n!",
+        )
 
     async def callback(self, interaction: discord.Interaction):
         self.view.add_crewmate(interaction.user)
@@ -42,10 +45,8 @@ class YarrAddButton(Button):
 
 
 class YarrRemoveButton(Button):
-    def __init__(self, *args, **kwargs):
-        kwargs["style"] = ButtonStyle.grey
-        kwargs["label"] = "Count me out..."
-        super().__init__(*args, **kwargs)
+    def __init__(self):
+        super().__init__(style=ButtonStyle.grey, label="Count me out...")
 
     async def callback(self, interaction: discord.Interaction):
         self.view.remove_crewmate(interaction.user)
@@ -53,7 +54,7 @@ class YarrRemoveButton(Button):
 
 
 class YarrView(View):
-    def __init__(self, member: discord.Member, emoji: discord.PartialEmoji):
+    def __init__(self, member: discord.Member):
         super().__init__(timeout=None)
 
         self.crew = {member}
@@ -61,7 +62,7 @@ class YarrView(View):
         self.random_chat = random_chat_wheel()
         self.gif_url = None
 
-        self.add_item(YarrAddButton(emoji=emoji))
+        self.add_item(YarrAddButton())
         self.add_item(YarrRemoveButton())
 
     def add_crewmate(self, member: discord.Member):
