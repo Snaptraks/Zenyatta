@@ -13,7 +13,6 @@ class SeaofThieves(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.pirate_role = defaultdict(lambda: None)
-        self.skull_emoji = defaultdict(lambda: None)
 
     @commands.hybrid_command(aliases=["yar"])
     async def yarr(self, ctx):
@@ -26,13 +25,8 @@ class SeaofThieves(commands.Cog):
                 role = ctx.guild.default_role
             self.pirate_role[guild_id] = role
 
-        if self.skull_emoji[guild_id] is None:
-            self.skull_emoji[guild_id] = discord.PartialEmoji.from_str(
-                "<:sea_of_thieves:788880548369006603>"
-            )
-
         gif_url = await random_gif(self.bot.http_session, "sea of thieves")
-        view = views.YarrView(ctx.author, self.skull_emoji[guild_id])
+        view = views.YarrView(ctx.author)
         embed = view.build_embed(gif_url)
 
         await ctx.send(self.pirate_role[guild_id].mention, embed=embed, view=view)
