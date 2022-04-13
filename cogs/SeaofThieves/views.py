@@ -37,7 +37,7 @@ class YarrAddButton(Button):
         super().__init__(*args, **kwargs)
 
     async def callback(self, interaction: discord.Interaction):
-        self.view.crew.add(interaction.user)
+        self.view.add_crewmate(interaction.user)
         await interaction.response.edit_message(embed=self.view.build_embed())
 
 
@@ -48,7 +48,7 @@ class YarrRemoveButton(Button):
         super().__init__(*args, **kwargs)
 
     async def callback(self, interaction: discord.Interaction):
-        self.view.crew.remove(interaction.user)
+        self.view.remove_crewmate(interaction.user)
         await interaction.response.edit_message(embed=self.view.build_embed())
 
 
@@ -63,6 +63,12 @@ class YarrView(View):
 
         self.add_item(YarrAddButton(emoji=emoji))
         self.add_item(YarrRemoveButton())
+
+    def add_crewmate(self, member: discord.Member):
+        self.crew.add(member)
+
+    def remove_crewmate(self, member: discord.Member):
+        self.crew.discard(member)
 
     def build_embed(self, gif_url=None):
         """Build the Embed with the new data."""

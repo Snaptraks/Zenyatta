@@ -1,10 +1,8 @@
 from collections import defaultdict
 
 import discord
-from discord import app_commands
 from discord.ext import commands
 
-# from . import menus
 from . import views
 from ..utils.gifs import random_gif
 
@@ -18,7 +16,6 @@ class SeaofThieves(commands.Cog):
         self.skull_emoji = defaultdict(lambda: None)
 
     @commands.hybrid_command(aliases=["yar"])
-    @app_commands.guilds()
     async def yarr(self, ctx):
         """Gather mateys to sail the Sea of Thieves!"""
 
