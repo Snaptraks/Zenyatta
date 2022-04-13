@@ -60,6 +60,7 @@ async def main():
     )
 
     startup_extensions = [
+        "cogs.Admin",
         "cogs.Overwatch",
         "cogs.SeaofThieves",
         "cogs.General",
