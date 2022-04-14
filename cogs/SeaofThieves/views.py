@@ -31,28 +31,6 @@ def random_chat_wheel():
     return random.choice(list(valid_chats))
 
 
-class YarrAddButton(Button):
-    def __init__(self, *args, **kwargs):
-        super().__init__(
-            style=ButtonStyle.blurple,
-            emoji=SEA_OF_THEIVES_EMOJI,
-            label="Aye aye cap'n!",
-        )
-
-    async def callback(self, interaction: discord.Interaction):
-        self.view.add_crewmate(interaction.user)
-        await interaction.response.edit_message(embed=self.view.build_embed())
-
-
-class YarrRemoveButton(Button):
-    def __init__(self):
-        super().__init__(style=ButtonStyle.grey, label="Count me out...")
-
-    async def callback(self, interaction: discord.Interaction):
-        self.view.remove_crewmate(interaction.user)
-        await interaction.response.edit_message(embed=self.view.build_embed())
-
-
 class YarrView(View):
     def __init__(self, member: discord.Member):
         super().__init__(timeout=None)
@@ -62,14 +40,17 @@ class YarrView(View):
         self.random_chat = random_chat_wheel()
         self.gif_url = None
 
-        self.add_item(YarrAddButton())
-        self.add_item(YarrRemoveButton())
+    @discord.ui.button(
+        style=ButtonStyle.blurple, emoji=SEA_OF_THEIVES_EMOJI, label="Aye aye cap'n!"
+    )
+    async def add_crewmate(self, interaction: discord.Interaction, button: Button):
+        self.crew.add(interaction.user)
+        await interaction.response.edit_message(embed=self.build_embed())
 
-    def add_crewmate(self, member: discord.Member):
-        self.crew.add(member)
-
-    def remove_crewmate(self, member: discord.Member):
-        self.crew.discard(member)
+    @discord.ui.button(style=ButtonStyle.grey, label="Count me out...")
+    async def remove_crewmate(self, interaction: discord.Interaction, button: Button):
+        self.crew.discard(interaction.user)
+        await interaction.response.edit_message(embed=self.build_embed())
 
     def build_embed(self, gif_url=None):
         """Build the Embed with the new data."""
