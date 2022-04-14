@@ -1,6 +1,7 @@
-from discord.ext import commands
+from typing import Optional, Literal
 
-import config
+import discord
+from discord.ext import commands
 
 
 class Admin(commands.Cog):
@@ -10,21 +11,35 @@ class Admin(commands.Cog):
     async def cog_check(self, ctx):
         return await self.bot.is_owner(ctx.author)
 
-    @commands.group(invoke_without_command=True)
-    async def sync(self, ctx):
-        """Sync AppCommands to Discord."""
+    @commands.command()
+    async def sync(
+        self,
+        ctx: commands.Context,
+        guilds: commands.Greedy[discord.Object],
+        spec: Optional[Literal["~"]] = None,
+    ) -> None:
+        """Sync AppCommands to guilds, or globally.
+        Umbra's sync command.
+        """
+        if not guilds:
+            if spec == "~":
+                fmt = await ctx.bot.tree.sync(guild=ctx.guild)
+            else:
+                fmt = await ctx.bot.tree.sync()
 
-        await ctx.send_help(ctx.command)
+            await ctx.send(
+                f"Synced {len(fmt)} commands "
+                f"{'globally' if spec is None else 'to the current guild.'}"
+            )
+            return
 
-    @sync.command(name="dev")
-    async def sync_dev(self, ctx):
-        """Sync development AppCommands to Discord."""
+        fmt = 0
+        for guild in guilds:
+            try:
+                await ctx.bot.tree.sync(guild=guild)
+            except discord.HTTPException:
+                pass
+            else:
+                fmt += 1
 
-        await self.bot.tree.sync(guild=config.dev_guild)
-        await ctx.reply("Syncing to dev guild successful.")
-
-    @sync.command(name="all")
-    async def sync_all(self, ctx):
-        """Sync all AppCommands to Discord."""
-        await self.bot.tree.sync()
-        await ctx.reply("Syncing all AppCommands successful.")
+        await ctx.send(f"Synced the tree to {fmt}/{len(guilds)} guilds.")
