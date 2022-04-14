@@ -306,16 +306,9 @@ class Overwatch(commands.Cog):
             print("Raised", type(e).__name__, e)
             return
 
-        e.add_field(
-            name="BattleTag", value=data.name,
-        )
-        e.add_field(
+        e.add_field(name="BattleTag", value=data.name,).add_field(
             name="Level", value=data.level + 100 * data.prestige,
-        )
-        e.add_field(
-            name="Endorsement Level", value=data.endorsement,
-        )
-        e.add_field(
+        ).add_field(name="Endorsement Level", value=data.endorsement,).add_field(
             name="Games Won", value=data.gamesWon,
         )
 
@@ -338,13 +331,9 @@ class Overwatch(commands.Cog):
 
         qpc = data.quickPlayStats.careerStats.allHeroes
         # general
-        e.add_field(
-            name="Kills", value=qpc.combat.eliminations,
-        )
-        e.add_field(
+        e.add_field(name="Kills", value=qpc.combat.eliminations,).add_field(
             name="Deaths", value=qpc.combat.deaths,
-        )
-        e.add_field(
+        ).add_field(
             name="Games Won", value=qpc.game.gamesWon,
         )
         meds = []
@@ -361,25 +350,17 @@ class Overwatch(commands.Cog):
                 f"{medG}:first_place: ({medT}:medal:)"
             ),
             inline=False,
-        )
-        # offence
-        e.add_field(
+        ).add_field(  # offence
             name="Most Damage Done", value=qpc.best.allDamageDoneMostInGame,
-        )
-        e.add_field(
+        ).add_field(
             name="Total Damage Done", value=qpc.combat.damageDone,
-        )
-        # assists
-        e.add_field(
+        ).add_field(  # assists
             name="Most Healing Done", value=qpc.best.healingDoneMostInGame,
-        )
-        e.add_field(
+        ).add_field(
             name="Total Healing Done", value=qpc.assists.healingDone,
-        )
-        e.add_field(
+        ).add_field(
             name="Defensive Assists", value=qpc.assists.defensiveAssists,
-        )
-        e.add_field(
+        ).add_field(
             name="Offensive Assists", value=qpc.assists.offensiveAssists,
         )
 
@@ -402,13 +383,9 @@ class Overwatch(commands.Cog):
 
         cc = data.competitiveStats.careerStats.allHeroes
         # general
-        e.add_field(
-            name="Kills", value=cc.combat.eliminations,
-        )
-        e.add_field(
+        e.add_field(name="Kills", value=cc.combat.eliminations,).add_field(
             name="Deaths", value=cc.combat.deaths,
-        )
-        e.add_field(
+        ).add_field(
             name="Games Won", value=cc.game.gamesWon,
         )
         meds = []
@@ -425,25 +402,17 @@ class Overwatch(commands.Cog):
                 f"{medG}:first_place: ({medT}:medal:)"
             ),
             inline=False,
-        )
-        # offence
-        e.add_field(
+        ).add_field(  # offence
             name="Most Damage Done", value=cc.best.allDamageDoneMostInGame,
-        )
-        e.add_field(
+        ).add_field(
             name="Total Damage Done", value=cc.combat.damageDone,
-        )
-        # assists
-        e.add_field(
+        ).add_field(  # assists
             name="Most Healing Done", value=cc.best.healingDoneMostInGame,
-        )
-        e.add_field(
+        ).add_field(
             name="Total Healing Done", value=cc.assists.healingDone,
-        )
-        e.add_field(
+        ).add_field(
             name="Defensive Assists", value=cc.assists.defensiveAssists,
-        )
-        e.add_field(
+        ).add_field(
             name="Offensive Assists", value=cc.assists.offensiveAssists,
         )
 
