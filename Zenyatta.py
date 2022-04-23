@@ -77,7 +77,7 @@ async def main():
                 print("Failed to load extension {}\n{}".format(extension, exc))
             else:
                 print("Extension loaded successfully.")
-        await bot.start(config.snapbot_token)
+        await bot.start(config.token)
 
 
 if __name__ == "__main__":
