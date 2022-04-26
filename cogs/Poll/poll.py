@@ -22,6 +22,7 @@ class Poll(commands.Cog):
         await self._poll_callback(interaction, max_values=1)
 
     @poll.command(name="multiple")
+    @app_commands.describe(max_answers="The maximum choices a user can select")
     async def poll_multiple(
         self,
         interaction: discord.Interaction,
