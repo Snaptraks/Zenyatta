@@ -19,14 +19,14 @@ class PollCreate(ui.Modal, title="Poll Creation"):
     )
 
     async def on_submit(self, interaction: discord.Interaction):
-        await interaction.response.send_message("Poll created")
+        await interaction.response.send_message("Poll created", ephemeral=True)
 
 
-class PollSingleInput(ui.View):
-    def __init__(self, *, author: discord.Member, modal: ui.Modal):
+class PollInput(ui.View):
+    def __init__(self, *, author: discord.Member, modal: ui.Modal, max_values: int):
         super().__init__(timeout=None)
         self.author = author
-        self.question = modal.question.value
+        self.question = modal.question
         self.options = {}  # options to vote for
         self.results = {}  # what users voted for
 
@@ -34,6 +34,8 @@ class PollSingleInput(ui.View):
             value = str(i + 1)
             self.options[value] = option
             self.on_vote.add_option(label=option, value=value)
+
+        self.on_vote.max_values = max_values
 
     @ui.select()
     async def on_vote(self, interaction: discord.Interaction, select: ui.Select):
@@ -56,8 +58,21 @@ class PollSingleInput(ui.View):
         await interaction.response.edit_message(embed=embed, attachments=[graph])
 
     async def build_embed(self):
+        results = self._count_results()
+        top_answer = results.most_common(1)
+        if top_answer:
+            top_answer = top_answer[0][1]
+        else:
+            top_answer = None
+
+        def bold(i, option):
+            if results[i] == top_answer:
+                return f"**{option}**"
+            else:
+                return option
+
         description = "\n".join(
-            f"`{i:>2}.` {option}" for i, option in self.options.items()
+            f"`{i:>2}.` {bold(i, option)}" for i, option in self.options.items()
         )
         graph = await asyncio.get_running_loop().run_in_executor(None, self.build_graph)
         embed = discord.Embed(
@@ -67,13 +82,19 @@ class PollSingleInput(ui.View):
         return embed, graph
 
     def build_graph(self):
-        results = Counter([v for votes in self.results.values() for v in votes])
-        labels = [
-            f"{self.options[key]}\n({value} votes)" for key, value in results.items()
-        ]
-
+        results = self._count_results()
         fig, ax = plt.subplots()
-        ax.pie(results.values(), labels=labels, wedgeprops={"width": 0.5})
+        if results:
+            labels = [
+                f"{self.options[key]}\n({value} votes)"
+                for key, value in results.items()
+            ]
+            ax.pie(results.values(), labels=labels, wedgeprops={"width": 0.5})
+        else:
+            text_kwargs = dict(ha="center", va="center", fontsize=28)
+            ax.text(0.5, 0.5, "No votes yet!", **text_kwargs)
+            ax.set_axis_off()
+
         buffer = io.BytesIO()
         fig.savefig(buffer, format="png")
         plt.close(fig=fig)
@@ -81,8 +102,5 @@ class PollSingleInput(ui.View):
 
         return discord.File(buffer, "poll_results.png")
 
-
-class PollMultipleInput(PollSingleInput):
-    def __init__(self, *, author: discord.Member, modal: ui.Modal, max_values=None):
-        super().__init__(author=author, modal=modal)
-        self.on_vote.max_values = max_values or len(self.options)
+    def _count_results(self):
+        return Counter([v for votes in self.results.values() for v in votes])
