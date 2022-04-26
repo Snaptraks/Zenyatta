@@ -59,6 +59,7 @@ class PollInput(ui.View):
 
     async def build_embed(self):
         results = self._count_results()
+        total_votes = len(self.results)
         top_answer = results.most_common(1)
         if top_answer:
             top_answer = top_answer[0][1]
@@ -75,9 +76,18 @@ class PollInput(ui.View):
             f"`{i:>2}.` {bold(i, option)}" for i, option in self.options.items()
         )
         graph = await asyncio.get_running_loop().run_in_executor(None, self.build_graph)
-        embed = discord.Embed(
-            title=self.question, description=description, color=discord.Color.blurple()
-        ).set_image(url=f"attachment://{graph.filename}")
+        embed = (
+            discord.Embed(
+                title=self.question,
+                description=description,
+                color=discord.Color.blurple(),
+            )
+            .set_image(url=f"attachment://{graph.filename}")
+            .set_author(
+                name=self.author.display_name, icon_url=self.author.display_avatar.url
+            )
+            .set_footer(text=f"{total_votes} total users voted.")
+        )
 
         return embed, graph
 
