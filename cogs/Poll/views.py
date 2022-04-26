@@ -42,6 +42,11 @@ class PollInput(ui.View):
         self.results[interaction.user.id] = select.values
         await self.update_message(interaction)
 
+    @ui.button(label="Clear My Vote", style=discord.ButtonStyle.gray)
+    async def on_clear(self, interaction: discord.Interaction, button: ui.Button):
+        del self.results[interaction.user.id]
+        await self.update_message(interaction)
+
     @ui.button(label="Stop Poll", style=discord.ButtonStyle.red)
     async def on_stop(self, interaction: discord.Interaction, button: ui.Button):
         if interaction.user.id == self.author.id:
