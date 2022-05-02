@@ -31,11 +31,16 @@ def random_chat_wheel():
     return random.choice(list(valid_chats))
 
 
+def format_member_list(members):
+    return "\n".join([f"{m.display_name} ({m.mention})" for m in members])
+
+
 class YarrView(View):
     def __init__(self, member: discord.Member):
         super().__init__(timeout=None)
 
         self.crew = {member}
+        self.not_playing = set()
         self._captain = member
         self.random_chat = random_chat_wheel()
         self.gif_url = None
@@ -45,11 +50,13 @@ class YarrView(View):
     )
     async def add_crewmate(self, interaction: discord.Interaction, button: Button):
         self.crew.add(interaction.user)
+        self.not_playing.discard(interaction.user)
         await interaction.response.edit_message(embed=self.build_embed())
 
     @discord.ui.button(style=ButtonStyle.grey, label="Count me out...")
     async def remove_crewmate(self, interaction: discord.Interaction, button: Button):
         self.crew.discard(interaction.user)
+        self.not_playing.add(interaction.user)
         await interaction.response.edit_message(embed=self.build_embed())
 
     def build_embed(self, gif_url=None):
@@ -64,7 +71,8 @@ class YarrView(View):
             "sails today, join in on the plunder!"
         )
 
-        crew_list = "\n".join([f"{m.display_name} ({m.mention})" for m in self.crew])
+        crew_list = format_member_list(self.crew)
+        not_playing_list = format_member_list(self.not_playing)
 
         embed = (
             discord.Embed(description=description, color=EMBED_COLOR)
@@ -72,5 +80,7 @@ class YarrView(View):
             .set_thumbnail(url=SHIP_THUMBNAILS[min(len(self.crew), 4)])
             .add_field(name="Crew", value=crew_list if crew_list else "No matey")
         )
+        if not_playing_list:
+            embed.add_field(name="Staying on shore", value=not_playing_list)
 
         return embed
