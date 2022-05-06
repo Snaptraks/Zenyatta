@@ -1,10 +1,26 @@
 import asyncio
 from collections import Counter
+from dataclasses import dataclass
 import io
 
 import discord
 from discord import ui
 import matplotlib.pyplot as plt
+
+
+@dataclass
+class _ProxyTextInput:
+    value: str
+
+
+class PollYesNoCreate(ui.Modal, title="Poll Creation"):
+    question = ui.TextInput(
+        label="Question", placeholder="What is your Yes or No question?", required=True
+    )
+    options = _ProxyTextInput("Yes\nNo")
+
+    async def on_submit(self, interaction: discord.Interaction):
+        await interaction.response.send_message("Poll created", ephemeral=True)
 
 
 class PollCreate(ui.Modal, title="Poll Creation"):
