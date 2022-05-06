@@ -19,7 +19,7 @@ class Poll(commands.Cog):
     async def poll_single(self, interaction: discord.Interaction):
         """Create a single choice poll."""
 
-        await self._poll_callback(interaction, max_values=1)
+        await self._poll_callback(interaction, views.PollCreate(), max_values=1)
 
     @poll.command(name="multiple")
     @app_commands.describe(max_answers="The maximum choices a user can select")
@@ -30,14 +30,25 @@ class Poll(commands.Cog):
     ):
         """Create a multiple choice poll."""
 
-        await self._poll_callback(interaction, max_values=max_answers)
+        await self._poll_callback(
+            interaction, views.PollCreate(), max_values=max_answers
+        )
+
+    @poll.command(name="yes-no")
+    async def poll_yes_no(self, interaction: discord.Interaction):
+        """Create a "Yes or No" poll."""
+
+        await self._poll_callback(interaction, views.PollYesNoCreate(), max_values=1)
 
     async def _poll_callback(
-        self, interaction: discord.Interaction, *, max_values: int
+        self,
+        interaction: discord.Interaction,
+        modal: discord.ui.Modal,
+        *,
+        max_values: int
     ):
         """Callback for poll creation and sending to the channel."""
 
-        modal = views.PollCreate()
         await interaction.response.send_modal(modal)
         await modal.wait()
 
