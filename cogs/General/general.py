@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-# from . import menus
+from . import views
 
 
 GRANDMASTER_ROLE_ID = [
@@ -40,10 +40,12 @@ class General(commands.Cog):
             ),
             color=discord.Color.blurple(),
         )
-        menu = menus.ConfirmMenu(embed=embed)
-        confirmed = await menu.prompt(ctx)
 
-        if confirmed:
+        view = views.Confirm()
+        await ctx.reply(embed=embed, view=view)
+        await view.wait()
+
+        if view.confirmed:
             # get roles
             for role_id in GRANDMASTER_ROLE_ID:
                 grandmaster_role = ctx.guild.get_role(role_id)
