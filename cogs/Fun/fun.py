@@ -4,7 +4,7 @@ from pathlib import Path
 import discord
 from discord import app_commands
 from discord.ext import commands
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageSequence
 
 import config
 
@@ -18,10 +18,18 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        self.bonk_context = app_commands.ContextMenu(
-            name="Bonk", callback=self._bonk_context, guild_ids=[config.dev_guild.id]
+        self.bonk_context_menu = app_commands.ContextMenu(
+            name="Bonk",
+            callback=self._bonk_context_menu,
+            guild_ids=[config.dev_guild.id],
         )
-        self.bot.tree.add_command(self.bonk_context)
+        self.bot.tree.add_command(self.bonk_context_menu)
+        self.lick_context_menu = app_commands.ContextMenu(
+            name="Lick",
+            callback=self._lick_context_menu,
+            guild_ids=[config.dev_guild.id],
+        )
+        self.bot.tree.add_command(self.lick_context_menu)
 
     @commands.hybrid_command(name="bonk")
     @app_commands.describe(text="Text to add to the image")
@@ -47,7 +55,7 @@ class Fun(commands.Cog):
         else:
             raise error
 
-    async def _bonk_context(
+    async def _bonk_context_menu(
         self, interaction: discord.Interaction, member: discord.Member
     ):
         """Bonk a member!"""
@@ -100,3 +108,45 @@ class Fun(commands.Cog):
         edited.seek(0)
 
         return edited
+
+    async def _lick_context_menu(
+        self, interaction: discord.Interaction, member: discord.Member
+    ):
+        bytes = await self.bot.loop.run_in_executor(
+            None,
+            self._assemble_lick_gif,
+            io.BytesIO(await member.display_avatar.read()),
+        )
+
+        file = discord.File(bytes, filename="lick.gif")
+
+        await interaction.response.send_message(file=file)
+
+    def _assemble_lick_gif(self, avatar_bytes):
+        avatar = Image.open(avatar_bytes)
+        lick_gif = Image.open(COG_PATH / "lick_template.gif")
+        size = (lick_gif.size[1], lick_gif.size[1])
+
+        mask = Image.new("RGBA", size)
+        draw = ImageDraw.Draw(mask)
+        draw.ellipse((0, 0) + size, fill=(0, 0, 0, 255))
+        avatar = ImageOps.fit(avatar, mask.size)
+
+        frames = []
+        for i, frame in enumerate(ImageSequence.Iterator(lick_gif)):
+            frame = frame.convert("RGBA")
+            box = (frame.size[0] - frame.size[1] - 50, 0, *frame.size)
+            frame = frame.crop(box=box)
+            base = Image.new("RGBA", frame.size)
+            base.paste(avatar)
+            # base.paste(avatar, mask=mask)
+            base.paste(frame, mask=frame)
+            frames.append(base)
+
+        bytes = io.BytesIO()
+        frames[0].save(
+            bytes, save_all=True, append_images=frames[1:], loop=0, format="gif"
+        )
+        bytes.seek(0)
+
+        return bytes
