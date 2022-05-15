@@ -6,8 +6,6 @@ from discord import app_commands
 from discord.ext import commands
 from PIL import Image, ImageDraw, ImageFont, ImageOps, ImageSequence
 
-import config
-
 
 COG_PATH = Path(__file__).parent
 
@@ -19,21 +17,16 @@ class Fun(commands.Cog):
         self.bot = bot
 
         self.bonk_context_menu = app_commands.ContextMenu(
-            name="Bonk",
-            callback=self._bonk_context_menu,
-            guild_ids=[config.dev_guild.id],
+            name="Bonk", callback=self._bonk_context_menu,
         )
         self.bot.tree.add_command(self.bonk_context_menu)
         self.lick_context_menu = app_commands.ContextMenu(
-            name="Lick",
-            callback=self._lick_context_menu,
-            guild_ids=[config.dev_guild.id],
+            name="Lick", callback=self._lick_context_menu,
         )
         self.bot.tree.add_command(self.lick_context_menu)
 
     @commands.hybrid_command(name="bonk")
     @app_commands.describe(text="Text to add to the image")
-    @app_commands.guilds(config.dev_guild)
     async def bonk_command(self, ctx, member: discord.Member, *, text: str = None):
         """Bonk a member, and add a message!
         Due to the member argument not being last, you will have to
