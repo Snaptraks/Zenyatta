@@ -26,7 +26,7 @@ class Fun(commands.Cog):
         self.bot.tree.add_command(self.lick_context_menu)
 
     @commands.hybrid_command(name="bonk")
-    @app_commands.describe(text="Text to add to the image")
+    @app_commands.describe(member="Member to bonk", text="Text to add to the image")
     async def bonk_command(self, ctx, member: discord.Member, *, text: str = None):
         """Bonk a member, and add a message!
         Due to the member argument not being last, you will have to
