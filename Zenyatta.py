@@ -65,6 +65,7 @@ async def main():
         "cogs.SeaofThieves",
         "cogs.General",
         "cogs.Fun",
+        "cogs.Poll",
     ]
 
     async with bot:
