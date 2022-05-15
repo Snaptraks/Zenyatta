@@ -23,6 +23,7 @@ class Admin(commands.Cog):
         """
         if not guilds:
             if spec == "~":
+                ctx.bot.tree.copy_global_to(guild=ctx.guild)
                 fmt = await ctx.bot.tree.sync(guild=ctx.guild)
             else:
                 fmt = await ctx.bot.tree.sync()

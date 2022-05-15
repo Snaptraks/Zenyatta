@@ -4,16 +4,12 @@ from discord.ext import commands
 
 from . import views
 
-import config
-
 
 class Poll(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    poll = app_commands.Group(
-        name="poll", description="Create a poll", guild_ids=[config.dev_guild.id]
-    )
+    poll = app_commands.Group(name="poll", description="Create a poll")
 
     @poll.command(name="single")
     async def poll_single(self, interaction: discord.Interaction):
