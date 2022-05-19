@@ -60,12 +60,12 @@ async def main():
     )
 
     startup_extensions = [
-        "cogs.Admin",
         "cogs.Overwatch",
         "cogs.SeaofThieves",
         "cogs.General",
-        "cogs.Fun",
-        "cogs.Poll",
+        "snapcogs.Admin",
+        "snapcogs.Fun",
+        "snapcogs.Poll",
     ]
 
     async with bot:
