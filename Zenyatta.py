@@ -18,6 +18,8 @@ async def main():
         "snapcogs.Admin",
         "snapcogs.Fun",
         "snapcogs.Poll",
+        "snapcogs.Roles",
+        "snapcogs.Information",
     ]
 
     bot = Bot(
