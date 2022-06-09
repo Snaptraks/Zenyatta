@@ -1,6 +1,7 @@
 from collections import defaultdict
 
 import discord
+from discord import app_commands
 from discord.ext import commands
 
 from . import views
@@ -15,7 +16,8 @@ class SeaofThieves(commands.Cog):
         self.pirate_role = defaultdict(lambda: None)
 
     @commands.hybrid_command(aliases=["yar"])
-    async def yarr(self, ctx):
+    @app_commands.describe(message="What's the plan, captain?")
+    async def yarr(self, ctx, *, message: str = ""):
         """Gather mateys to sail the Sea of Thieves!"""
 
         guild_id = ctx.guild.id
@@ -29,4 +31,6 @@ class SeaofThieves(commands.Cog):
         view = views.YarrView(ctx.author)
         embed = view.build_embed(gif_url)
 
-        await ctx.send(self.pirate_role[guild_id].mention, embed=embed, view=view)
+        await ctx.send(
+            f"{self.pirate_role[guild_id].mention}\n{message}", embed=embed, view=view
+        )
