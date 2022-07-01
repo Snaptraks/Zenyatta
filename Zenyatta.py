@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 import discord
 from discord.ext import commands
@@ -7,7 +8,7 @@ from snapcogs import Bot
 import config
 
 
-async def main():
+def main():
     intents = discord.Intents.all()
     allowed_mentions = discord.AllowedMentions(replied_user=False)
 
@@ -32,8 +33,7 @@ async def main():
         startup_extensions=startup_extensions,
     )
 
-    async with bot:
-        await bot.start(config.token)
+    bot.run(config.token, log_level=logging.WARNING)
 
 
 if __name__ == "__main__":
