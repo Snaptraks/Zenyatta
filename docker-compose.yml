@@ -6,4 +6,4 @@ services:
         container_name: zenyatta
         restart: always
         volumes:
-            - "./db:/db"
+            - "./db:/bot/db"
