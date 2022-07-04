@@ -1,10 +1,7 @@
 FROM python:3.9-slim
 
 # additional repositories for fonts
-RUN echo "deb http://httpredir.debian.org/debian buster main contrib non-free" > /etc/apt/sources.list \
-    && echo "deb http://httpredir.debian.org/debian buster-updates main contrib non-free" >> /etc/apt/sources.list \
-    && echo "deb http://security.debian.org/ buster/updates main contrib non-free" >> /etc/apt/sources.list \
-    && echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+RUN sed -i'.bak' 's/$/ contrib/' /etc/apt/sources.list
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git ttf-mscorefonts-installer && \
