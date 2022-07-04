@@ -1,7 +1,13 @@
+import logging
+
 import discord
 from discord.ext import commands
+from discord import app_commands
+from snapcogs.utils.views import confirm_prompt
 
 from . import views
+
+LOGGER = logging.getLogger(__name__)
 
 
 GRANDMASTER_ROLE_ID = [
@@ -14,19 +20,23 @@ class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
-    @commands.has_any_role(*GRANDMASTER_ROLE_ID)
-    async def create(self, ctx, category_name, role_name=None):
-        """Create a category including a text and a voice channel,
+    @app_commands.command()
+    @app_commands.checks.bot_has_permissions(manage_channels=True, manage_roles=True)
+    @app_commands.default_permissions(manage_channels=True)
+    async def create(
+        self, interaction: discord.Interaction, game_name: str, role_name: str = None
+    ):
+        """Make a category of channels for a game.
+        
+        Create a category including a text and a voice channel,
         as well as a role, and give the necessary permissions.
         """
         if role_name is None:
-            role_name = category_name
+            role_name = game_name
 
-        text_channel_name = category_name.replace(" ", "-")
-        voice_channel_name = category_name
-        category_name = category_name.upper()
+        text_channel_name = game_name.replace(" ", "-")
+        voice_channel_name = game_name
+        category_name = game_name.upper()
 
         # ask to confirm first
         embed = discord.Embed(
@@ -41,20 +51,19 @@ class General(commands.Cog):
             color=discord.Color.blurple(),
         )
 
-        view = views.Confirm()
-        await ctx.reply(embed=embed, view=view)
-        await view.wait()
+        confirm = await confirm_prompt(interaction, content=embed.description)
 
-        if view.confirmed:
+        if confirm:
+            guild = interaction.guild
             # get roles
             for role_id in GRANDMASTER_ROLE_ID:
-                grandmaster_role = ctx.guild.get_role(role_id)
+                grandmaster_role = interaction.guild.get_role(role_id)
                 if grandmaster_role is not None:
                     break
-            everyone = ctx.guild.default_role
+            everyone = guild.default_role
 
             # create new role
-            role = await ctx.guild.create_role(name=role_name, mentionable=True,)
+            role = await guild.create_role(name=role_name, mentionable=True,)
 
             # create permissions
             overwrites = {
@@ -64,7 +73,7 @@ class General(commands.Cog):
             }
 
             # create the category
-            category = await ctx.guild.create_category_channel(
+            category = await guild.create_category_channel(
                 category_name, overwrites=overwrites,
             )
 
@@ -78,19 +87,14 @@ class General(commands.Cog):
                 "You might want to move the category in the channels list..."
             )
 
-            await ctx.send(content)
+            await interaction.followup.send(content)
 
     @create.error
     async def create_error(self, ctx, error):
         """Error handler for the create command."""
 
-        if isinstance(
-            error, (commands.NoPrivateMessage, commands.BotMissingPermissions)
-        ):
+        if isinstance(error, app_commands.BotMissingPermissions):
             await ctx.send(error)
 
-        elif isinstance(error, commands.MissingAnyRole):
-            await ctx.send("You are missing a required role to run this command.")
-
         else:
-            raise error
+            LOGGER.error(error, exc_info=error)
