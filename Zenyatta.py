@@ -22,6 +22,7 @@ def main():
         "snapcogs.Roles",
         "snapcogs.Information",
         "snapcogs.Tips",
+        "snapcogs.Link",
     ]
 
     bot = Bot(
