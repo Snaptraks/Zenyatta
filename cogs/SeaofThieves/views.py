@@ -76,10 +76,11 @@ class YarrView(View):
 
         embed = (
             discord.Embed(description=description, color=EMBED_COLOR)
-            .set_image(url=self.gif_url)
             .set_thumbnail(url=SHIP_THUMBNAILS[min(len(self.crew), 4)])
             .add_field(name="Crew", value=crew_list if crew_list else "No matey")
         )
+        if self.gif_url:
+            embed.set_image(url=self.gif_url)
         if not_playing_list:
             embed.add_field(name="Staying on shore", value=not_playing_list)
 

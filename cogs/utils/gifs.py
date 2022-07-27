@@ -14,11 +14,13 @@ async def random_gif(http_session, query):
         "locale": "en",
     }
     resp = await _tenor_endpoint(http_session, "random", params)
-    resp = resp['results']
-    random_gif = random.choice(resp)
-    gif_url = random_gif['media'][0]['gif']['url']
-
-    return gif_url
+    resp = resp.get("results", [])
+    if resp:
+        random_gif = random.choice(resp)
+        gif_url = random_gif["media"][0]["gif"]["url"]
+        return gif_url
+    else:
+        return None
 
 
 async def _tenor_endpoint(http_session, endpoint, params):
@@ -27,12 +29,13 @@ async def _tenor_endpoint(http_session, endpoint, params):
     query = params["q"].split()
     params["key"] = config.tenor_api_key
     if len(query) >= 1:
-        async with http_session.get(f"https://api.tenor.com/v1/{endpoint}",
-                                    params=params) as resp:
+        async with http_session.get(
+            f"https://api.tenor.com/v1/{endpoint}", params=params
+        ) as resp:
             if resp.status == 200:
                 try:
                     json_resp = await resp.json()
                     return json_resp
                 except Exception:
                     pass
-    return ""
+    return {}
