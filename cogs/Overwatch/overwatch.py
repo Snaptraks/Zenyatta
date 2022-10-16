@@ -148,7 +148,7 @@ class Overwatch(commands.Cog):
         """Shows stats for the player.
         The author must have registered their BattleTag beforehand.
         """
-        await ctx.channel.trigger_typing()
+        await ctx.channel.typing()
         if ctx.invoked_subcommand is None:
             await ctx.send("Unknown subcommand.")
 
@@ -281,7 +281,9 @@ class Overwatch(commands.Cog):
         title = title_dict[ctx.invoked_with]
 
         e = discord.Embed(
-            title=f"Overwatch {title} for {member}.", type="rich", colour=EMBED_COLOR,
+            title=f"Overwatch {title} for {member}.",
+            type="rich",
+            colour=EMBED_COLOR,
         )
 
         if data.private:
@@ -307,9 +309,11 @@ class Overwatch(commands.Cog):
             return
 
         e.add_field(name="BattleTag", value=data.name,).add_field(
-            name="Level", value=data.level + 100 * data.prestige,
+            name="Level",
+            value=data.level + 100 * data.prestige,
         ).add_field(name="Endorsement Level", value=data.endorsement,).add_field(
-            name="Games Won", value=data.gamesWon,
+            name="Games Won",
+            value=data.gamesWon,
         )
 
         await ctx.send(embed=e, file=discord.File("cogs/Overwatch/full.png"))
@@ -332,9 +336,11 @@ class Overwatch(commands.Cog):
         qpc = data.quickPlayStats.careerStats.allHeroes
         # general
         e.add_field(name="Kills", value=qpc.combat.eliminations,).add_field(
-            name="Deaths", value=qpc.combat.deaths,
+            name="Deaths",
+            value=qpc.combat.deaths,
         ).add_field(
-            name="Games Won", value=qpc.game.gamesWon,
+            name="Games Won",
+            value=qpc.game.gamesWon,
         )
         meds = []
         for med in ("Bronze", "Silver", "Gold", ""):
@@ -351,17 +357,23 @@ class Overwatch(commands.Cog):
             ),
             inline=False,
         ).add_field(  # offence
-            name="Most Damage Done", value=qpc.best.allDamageDoneMostInGame,
+            name="Most Damage Done",
+            value=qpc.best.allDamageDoneMostInGame,
         ).add_field(
-            name="Total Damage Done", value=qpc.combat.damageDone,
+            name="Total Damage Done",
+            value=qpc.combat.damageDone,
         ).add_field(  # assists
-            name="Most Healing Done", value=qpc.best.healingDoneMostInGame,
+            name="Most Healing Done",
+            value=qpc.best.healingDoneMostInGame,
         ).add_field(
-            name="Total Healing Done", value=qpc.assists.healingDone,
+            name="Total Healing Done",
+            value=qpc.assists.healingDone,
         ).add_field(
-            name="Defensive Assists", value=qpc.assists.defensiveAssists,
+            name="Defensive Assists",
+            value=qpc.assists.defensiveAssists,
         ).add_field(
-            name="Offensive Assists", value=qpc.assists.offensiveAssists,
+            name="Offensive Assists",
+            value=qpc.assists.offensiveAssists,
         )
 
         await ctx.send(embed=e, file=discord.File("cogs/Overwatch/full.png"))
@@ -384,9 +396,11 @@ class Overwatch(commands.Cog):
         cc = data.competitiveStats.careerStats.allHeroes
         # general
         e.add_field(name="Kills", value=cc.combat.eliminations,).add_field(
-            name="Deaths", value=cc.combat.deaths,
+            name="Deaths",
+            value=cc.combat.deaths,
         ).add_field(
-            name="Games Won", value=cc.game.gamesWon,
+            name="Games Won",
+            value=cc.game.gamesWon,
         )
         meds = []
         for med in ("Bronze", "Silver", "Gold", ""):
@@ -403,17 +417,23 @@ class Overwatch(commands.Cog):
             ),
             inline=False,
         ).add_field(  # offence
-            name="Most Damage Done", value=cc.best.allDamageDoneMostInGame,
+            name="Most Damage Done",
+            value=cc.best.allDamageDoneMostInGame,
         ).add_field(
-            name="Total Damage Done", value=cc.combat.damageDone,
+            name="Total Damage Done",
+            value=cc.combat.damageDone,
         ).add_field(  # assists
-            name="Most Healing Done", value=cc.best.healingDoneMostInGame,
+            name="Most Healing Done",
+            value=cc.best.healingDoneMostInGame,
         ).add_field(
-            name="Total Healing Done", value=cc.assists.healingDone,
+            name="Total Healing Done",
+            value=cc.assists.healingDone,
         ).add_field(
-            name="Defensive Assists", value=cc.assists.defensiveAssists,
+            name="Defensive Assists",
+            value=cc.assists.defensiveAssists,
         ).add_field(
-            name="Offensive Assists", value=cc.assists.offensiveAssists,
+            name="Offensive Assists",
+            value=cc.assists.offensiveAssists,
         )
 
         await ctx.send(embed=e, file=discord.File("cogs/Overwatch/full.png"))
