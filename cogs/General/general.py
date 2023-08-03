@@ -5,8 +5,6 @@ from discord.ext import commands
 from discord import app_commands
 from snapcogs.utils.views import confirm_prompt
 
-from . import views
-
 LOGGER = logging.getLogger(__name__)
 
 
@@ -27,7 +25,7 @@ class General(commands.Cog):
         self, interaction: discord.Interaction, game_name: str, role_name: str = None
     ):
         """Make a category of channels for a game.
-        
+
         Create a category including a text and a voice channel,
         as well as a role, and give the necessary permissions.
         """
@@ -63,23 +61,37 @@ class General(commands.Cog):
             everyone = guild.default_role
 
             # create new role
-            role = await guild.create_role(name=role_name, mentionable=True,)
+            role = await guild.create_role(
+                name=role_name,
+                mentionable=True,
+            )
 
             # create permissions
             overwrites = {
-                grandmaster_role: discord.PermissionOverwrite(read_messages=True,),
-                role: discord.PermissionOverwrite(read_messages=True,),
-                everyone: discord.PermissionOverwrite(read_messages=False,),
+                grandmaster_role: discord.PermissionOverwrite(
+                    read_messages=True,
+                ),
+                role: discord.PermissionOverwrite(
+                    read_messages=True,
+                ),
+                everyone: discord.PermissionOverwrite(
+                    read_messages=False,
+                ),
             }
 
             # create the category
             category = await guild.create_category_channel(
-                category_name, overwrites=overwrites,
+                category_name,
+                overwrites=overwrites,
             )
 
             # create the channels
-            text_channel = await category.create_text_channel(text_channel_name,)
-            voice_channel = await category.create_voice_channel(voice_channel_name,)
+            text_channel = await category.create_text_channel(
+                text_channel_name,
+            )
+            voice_channel = await category.create_voice_channel(
+                voice_channel_name,
+            )
 
             content = (
                 f"Done! See you in {text_channel.mention} "
