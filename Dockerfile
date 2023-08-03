@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 # additional repositories for fonts
 RUN sed -i'.bak' 's/$/ contrib/' /etc/apt/sources.list
