@@ -38,7 +38,7 @@ class YarrView(View):
     def __init__(self, member: discord.Member):
         super().__init__(timeout=None)
 
-        self.crew = {member}
+        self.crew: set[discord.User | discord.Member] = {member}
         self.not_playing = set()
         self._captain = member
         self.random_chat = random_chat_wheel()
