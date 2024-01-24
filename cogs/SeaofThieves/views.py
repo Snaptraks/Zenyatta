@@ -1,12 +1,11 @@
 import itertools
 import json
-from pathlib import Path
 import random
+from pathlib import Path
 
 import discord
 from discord import ButtonStyle
-from discord.ui import View, Button
-
+from discord.ui import Button, View
 
 with open(Path(__file__).parent / "chat_wheel.json") as f:
     CHAT_WHEEL = json.load(f)
