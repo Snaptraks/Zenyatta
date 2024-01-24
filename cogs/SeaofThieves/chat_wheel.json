@@ -1,0 +1,236 @@
+{
+    "alerts": [
+        "Aye!",
+        "LOOK OUT!",
+        "I need help!",
+        "Repair the ship!",
+        "No",
+        "Ship sighted!",
+        "Enemy here!",
+        "Everything is OK!"
+    ],
+    "chat": [
+        "I am in the water!",
+        "Sorry!",
+        "I am on the ship!",
+        "Well played!",
+        "Thanks!",
+        "*Rolls on deck laughing*",
+        "I am on the island!",
+        "Ahoy!"
+    ],
+    "my role": [
+        "What does everyone want to do?",
+        "I'll board them!",
+        "I'll repair!",
+        "I'll stay on the ship!",
+        "I'll use the cannons!",
+        "I'll stay on the island!",
+        "I'll deliver!",
+        "I'll steer!"
+    ],
+    "harpoon": [
+        "Firing the Harpoon!",
+        "Harpooned it!",
+        "Winching the Harpoon in!",
+        "Need to slow down!",
+        "Need a better angle!",
+        "Need to cet closer!",
+        "Holding it steady!",
+        "Missed!"
+    ],
+    "cannon": [
+        "Fire!",
+        "Missed!",
+        "Repair the ship!",
+        "Out of Cannonballs!",
+        "Need a better angle!",
+        "Incoming!",
+        "Man the Cannons!",
+        "Hit!"
+    ],
+    "ladder": [
+        "Heading up to the Crow's Nest!",
+        "Heading down from the Crow's Nest!"
+    ],
+    "map table": [
+        "Head North",
+        "Head North East",
+        "Head East",
+        "Head South East",
+        "Head South",
+        "Head South West",
+        "Head West",
+        "Head North West"
+    ],
+    "sail length": [
+        "Raising the Sail!",
+        "Sail up!",
+        "Thanks!",
+        "Sail down!",
+        "Need help raising the Sail!",
+        "Lower the Sail!",
+        "Full speed ahead!",
+        "Raise the Sail!"
+    ],
+    "wheel": [
+        "Raise the Sail!",
+        "Need a Compass Bearing!",
+        "Angle the Sail!",
+        "Drop the Anchor!",
+        "Lower the Sail!",
+        "Repair the Ship!",
+        "Man the Cannons!",
+        "Fire the Cannons!"
+    ],
+    "sail angle": [
+        "Angling the Sail!",
+        "Full billow!",
+        "Thanks!",
+        "Sail angled!",
+        "Need help angling the Sail!",
+        "The wind changed direction!",
+        "Angle the Sail!",
+        "Tack the Ship to catch the wind!"
+    ],
+    "capstan": [
+        "Raising the Anchor!",
+        "Push!",
+        "Thanks!",
+        "Let's head to the Outpost!",
+        "Need help raising the Anchor!",
+        "We need to move!",
+        "Drop the Anchor!",
+        "All aboard!"
+    ],
+    "banana": [
+        "Eating a Banana!",
+        "*Cronch*",
+        "We have plenty of Bananas!",
+        "Storing Bananas!",
+        "I'm low on health!",
+        "Take this Banana!",
+        "We're low on Bananas!",
+        "Last Banana!"
+    ],
+    "cannonball": [
+        "Reloading the Cannon!",
+        "These are heavy!",
+        "We have plenty of Cannonballs!",
+        "Storing Cannonballs!",
+        "Help me on the Cannons!",
+        "Take some Cannonballs!",
+        "We're low on Cannonballs!",
+        "Last Shot!"
+    ],
+    "wooden plank": [
+        "Repairing the Ship!",
+        "Need to Bail!",
+        "We have plenty of Wooden Planks!",
+        "Storing Wooden Planks!",
+        "Help me repair!",
+        "Take some Wooden Planks!",
+        "We're low on Wooden Planks!",
+        "Last Repair!"
+    ],
+    "spyglass": [
+        "I see a Ship!",
+        "It's close!",
+        "There's something on the island!",
+        "It's far away!",
+        "I see a Pirate!",
+        "Let's scope it out!",
+        "There's something in the water!",
+        "Looking good!"
+    ],
+    "shovel": [
+        "I'm digging!",
+        "Got it!",
+        "Over here!",
+        "Where is it?!",
+        "Need help digging!",
+        "This is the wrong place!",
+        "Follow me!",
+        "Around here somewhere..."
+    ],
+    "lantern": [
+        "Lighting the way!",
+        "It's getting dark...",
+        "Over here!",
+        "Making light work of this!",
+        "Lights out!",
+        "I'm flashing the lantern!",
+        "Follow me!",
+        "Raising the lantern!"
+    ],
+    "bucket": [
+        "Bailing water!",
+        "Repair the Ship!",
+        "Water in the Hull!",
+        "We're going down!",
+        "Help me bail!",
+        "Adandon Ship!",
+        "The Hull's empty!",
+        "Water's flooding in!"
+    ],
+    "compass": [
+        "North",
+        "North East",
+        "East",
+        "South East",
+        "South",
+        "South West",
+        "West",
+        "North West"
+    ],
+    "speaking trumpet": [
+        "FRIEND OR FOE!?",
+        "MERCY!!!",
+        "WE'RE FRIENDLY!",
+        "TRUCE!",
+        "LET'S FORM AN ALIANCE!",
+        "CAN YOU HEAR ME!?",
+        "IT'S DAVY JONES' FOR YOU!",
+        "OVER HERE!"
+    ],
+    "concertina": [
+        "All together now!",
+        "I love this Shanty!",
+        "Let's play some music!",
+        "Not this one...",
+        "Follow the music!",
+        "*wipes tears*",
+        "Let's play something different!",
+        "Arrr the feels!"
+    ],
+    "tankard": [
+        "Cheers!",
+        "Just a small sip...",
+        "Yer me best mates!!",
+        "Down in one!",
+        "My tankard is empty!",
+        "*bhuiafbhciohswfioa*",
+        "Feeling a bit groggy...",
+        "Here's to the Crew!"
+    ],
+    "fishing rod": [
+        "Gone fishin'!",
+        "I'm reeling this in!",
+        "I've caught something!",
+        "This one is getting away!",
+        "Let's fish!",
+        "It's a throphy catch!",
+        "It's a catch!",
+        "It's a small catch!"
+    ],
+    "pocket watch": [
+        "We've got time!",
+        "Watch this!",
+        "Time to move!",
+        "Time to pick a new Voyage",
+        "We don't have time!",
+        "Watch it matey!",
+        "Hurry!",
+        "I'll stand watch!"
+    ]
+}
