@@ -1,9 +1,9 @@
 version: "3.8"
 services:
-    bot:
-        build: .
-        image: zenyatta:latest
-        container_name: zenyatta
-        restart: always
-        volumes:
-            - "./db:/bot/db"
+  bot:
+    build: .
+    image: zenyatta:latest
+    container_name: zenyatta
+    restart: always
+    volumes:
+      - "./db:/bot/db"
