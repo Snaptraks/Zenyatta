@@ -74,7 +74,6 @@ class SeaofThieves(commands.Cog):
 
         dt_now = discord.utils.utcnow()
         time_now = dt_now.time().replace(tzinfo=timezone.utc)
-        # time_now = time(1, 30, tzinfo=timezone.utc)
 
         for gr_start, gr_end in GOLD_RUSH_PERIODS:
             if gr_start <= time_now < gr_end:
