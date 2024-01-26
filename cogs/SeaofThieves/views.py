@@ -40,7 +40,7 @@ class YarrView(View):
 
         self.crew: set[discord.User | discord.Member] = {member}
         self.not_playing = set()
-        self._captain = member
+        self.captain = member
         self.random_chat = random_chat_wheel()
         self.gif_url = None
 
@@ -66,7 +66,7 @@ class YarrView(View):
 
         description = (
             f"**{self.random_chat}**\n"
-            f"{self._captain.display_name} ({self._captain.mention}) "
+            f"{self.captain.display_name} ({self.captain.mention}) "
             "sails today, join in on the plunder!"
         )
 
