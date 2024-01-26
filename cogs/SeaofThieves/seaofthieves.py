@@ -78,6 +78,7 @@ class SeaofThieves(commands.Cog):
         for gr_start, gr_end in GOLD_RUSH_PERIODS:
             if gr_start <= time_now < gr_end:
                 dt_end = datetime_replace_time(dt_now, gr_end)
+                LOGGER.debug(f"Found next Gold Rush at {gr_start}, ends on {dt_end}.")
                 await interaction.response.send_message(
                     f"{GR_COIN} We are in Gold Rush until {format_dt(dt_end, 't')} "
                     f"({format_dt(dt_end, 'R')}).",
@@ -95,6 +96,7 @@ class SeaofThieves(commands.Cog):
         ]
         for gr_start in next_starts:
             if dt_now <= gr_start:
+                LOGGER.debug(f"Next Gold Rush on {gr_start}.")
                 await interaction.response.send_message(
                     f"{GR_COIN} Next Gold Rush at {format_dt(gr_start, 't')} "
                     f"({format_dt(gr_start, 'R')}).",
@@ -102,6 +104,10 @@ class SeaofThieves(commands.Cog):
                 )
                 # stop checking for events!
                 break
+        else:
+            LOGGER.warning(
+                "There was no Gold Rush event detected, something went wrong?"
+            )
 
     @tasks.loop(time=GOLD_RUSH_STARTS)
     async def gold_rush_start(self):
