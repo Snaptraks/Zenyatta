@@ -26,7 +26,7 @@ def main():
 
     bot = Bot(
         description="One cannot survive on strength alone.",
-        command_prefix="!",
+        command_prefix=commands.when_mentioned_or("!"),
         help_command=commands.DefaultHelpCommand(dm_help=False),
         intents=intents,
         allowed_mentions=allowed_mentions,
