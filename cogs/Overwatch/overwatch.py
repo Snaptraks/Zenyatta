@@ -1,11 +1,10 @@
 import json
-import numpy as np
 
 import discord
+import numpy as np
 from discord.ext import commands
 
 from ..utils.gifs import random_gif
-
 
 EMBED_COLOR = 0xF99E1A
 
@@ -19,7 +18,6 @@ class Overwatch(commands.Cog):
         self.is_playing = False
 
     async def cog_load(self):
-
         with open("cogs/Overwatch/zenyatta.json", "r") as f:
             self.voice_lines = json.load(f)
 
@@ -97,7 +95,10 @@ class Overwatch(commands.Cog):
         gif_url = await random_gif(self.bot.http_session, "overwatch")
         description = f"{vl} {ctx.author.mention} is {_ing}, join the fight."
 
-        embed = discord.Embed(description=description, color=EMBED_COLOR,).set_image(
+        embed = discord.Embed(
+            description=description,
+            color=EMBED_COLOR,
+        ).set_image(
             url=gif_url,
         )
 
@@ -119,9 +120,7 @@ class Overwatch(commands.Cog):
             ctx.me.mentioned_in(message)
             and not message.author.bot
             and not message.mention_everyone
-            and not message.content.startswith(self.bot.command_prefix)
         ):
-
             out = np.random.choice(mentions)
             await message.channel.send(out)
 
