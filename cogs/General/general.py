@@ -1,8 +1,8 @@
 import logging
 
 import discord
-from discord.ext import commands
 from discord import app_commands
+from discord.ext import commands
 from snapcogs.utils.views import confirm_prompt
 
 LOGGER = logging.getLogger(__name__)
@@ -22,7 +22,10 @@ class General(commands.Cog):
     @app_commands.checks.bot_has_permissions(manage_channels=True, manage_roles=True)
     @app_commands.default_permissions(manage_channels=True)
     async def create(
-        self, interaction: discord.Interaction, game_name: str, role_name: str = None
+        self,
+        interaction: discord.Interaction,
+        game_name: str,
+        role_name: str | None = None,
     ):
         """Make a category of channels for a game.
 
@@ -32,7 +35,7 @@ class General(commands.Cog):
         if role_name is None:
             role_name = game_name
 
-        text_channel_name = game_name.replace(" ", "-")
+        text_channel_name = game_name.replace(" ", "-").lower()
         voice_channel_name = game_name
         category_name = game_name.upper()
 
@@ -51,11 +54,16 @@ class General(commands.Cog):
 
         confirm = await confirm_prompt(interaction, content=embed.description)
 
-        if confirm:
+        if confirm.value:
             guild = interaction.guild
+            if guild is None:
+                # does not work in non-guild context
+                return
+
             # get roles
+            grandmaster_role = None
             for role_id in GRANDMASTER_ROLE_ID:
-                grandmaster_role = interaction.guild.get_role(role_id)
+                grandmaster_role = guild.get_role(role_id)
                 if grandmaster_role is not None:
                     break
             everyone = guild.default_role
@@ -68,9 +76,6 @@ class General(commands.Cog):
 
             # create permissions
             overwrites = {
-                grandmaster_role: discord.PermissionOverwrite(
-                    read_messages=True,
-                ),
                 role: discord.PermissionOverwrite(
                     read_messages=True,
                 ),
@@ -78,11 +83,15 @@ class General(commands.Cog):
                     read_messages=False,
                 ),
             }
+            if grandmaster_role is not None:
+                overwrites[grandmaster_role] = discord.PermissionOverwrite(
+                    read_messages=True,
+                )
 
             # create the category
             category = await guild.create_category_channel(
                 category_name,
-                overwrites=overwrites,
+                overwrites=overwrites,  # type: ignore
             )
 
             # create the channels
@@ -99,7 +108,7 @@ class General(commands.Cog):
                 "You might want to move the category in the channels list..."
             )
 
-            await interaction.followup.send(content)
+            await confirm.interaction.response.send_message(content, ephemeral=True)
 
     @create.error
     async def create_error(self, ctx, error):
