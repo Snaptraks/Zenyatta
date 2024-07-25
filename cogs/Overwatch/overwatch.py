@@ -1,7 +1,7 @@
 import json
+import random
 
 import discord
-import numpy as np
 from discord.ext import commands
 
 from ..utils.gifs import random_gif
@@ -91,7 +91,7 @@ class Overwatch(commands.Cog):
             + self.voice_lines["Kills"]
             + self.voice_lines["Ultimate"]
         )
-        vl = np.random.choice(vl)
+        vl = random.choice(vl)
         gif_url = await random_gif(self.bot.http_session, "overwatch")
         description = f"{vl} {ctx.author.mention} is {_ing}, join the fight."
 
@@ -121,7 +121,7 @@ class Overwatch(commands.Cog):
             and not message.author.bot
             and not message.mention_everyone
         ):
-            out = np.random.choice(mentions)
+            out = random.choice(mentions)
             await message.channel.send(out)
 
     async def play_overwatch(self):
