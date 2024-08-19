@@ -37,7 +37,7 @@ class General(commands.Cog):
 
         text_channel_name = game_name.replace(" ", "-").lower()
         voice_channel_name = game_name
-        category_name = game_name.upper()
+        category_name = game_name
 
         # ask to confirm first
         embed = discord.Embed(
