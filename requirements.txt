@@ -1,4 +1,4 @@
 aiosqlite==0.22.1
-discord.py==2.7.0
+discord.py==2.7.1
 Pillow==12.1.1
 git+https://github.com/Snaptraks/SnapCogs.git@aiosqlite
