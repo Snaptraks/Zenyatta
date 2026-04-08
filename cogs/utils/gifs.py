@@ -1,5 +1,4 @@
 import random
-from warnings import deprecated
 
 import config
 
@@ -26,7 +25,6 @@ async def random_gif(http_session, query):
         return None
 
 
-@deprecated("Use _klipy_endpoint instead.")
 async def _tenor_endpoint(http_session, endpoint, params):
     """Get a gif from Tenor"""
 
