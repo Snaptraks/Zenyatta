@@ -1,4 +1,6 @@
 import random
+from warnings import deprecated
+
 import config
 
 
@@ -9,20 +11,22 @@ async def random_gif(http_session, query):
     params = {
         "q": query,
         "limit": limit,
-        "media_filter": "minimal",
+        "media_filter": "gif",
         "contentfilter": "high",
         "locale": "en",
+        "random": "true",
     }
-    resp = await _tenor_endpoint(http_session, "random", params)
+    resp = await _klipy_endpoint(http_session, "search", params)
     resp = resp.get("results", [])
     if resp:
         random_gif = random.choice(resp)
-        gif_url = random_gif["media"][0]["gif"]["url"]
+        gif_url = random_gif["url"]
         return gif_url
     else:
         return None
 
 
+@deprecated("Use _klipy_endpoint instead.")
 async def _tenor_endpoint(http_session, endpoint, params):
     """Get a gif from Tenor"""
 
@@ -31,6 +35,24 @@ async def _tenor_endpoint(http_session, endpoint, params):
     if len(query) >= 1:
         async with http_session.get(
             f"https://api.tenor.com/v1/{endpoint}", params=params
+        ) as resp:
+            if resp.status == 200:
+                try:
+                    json_resp = await resp.json()
+                    return json_resp
+                except Exception:
+                    pass
+    return {}
+
+
+async def _klipy_endpoint(http_session, endpoint, params):
+    """Get a gif from Klipy"""
+
+    query = params["q"].split()
+    params["key"] = config.klipy_api_key
+    if len(query) >= 1:
+        async with http_session.get(
+            f"https://api.klipy.com/v2/{endpoint}", params=params
         ) as resp:
             if resp.status == 200:
                 try:
