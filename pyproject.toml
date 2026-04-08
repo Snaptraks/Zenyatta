@@ -1,0 +1,13 @@
+[project]
+    dependencies = [
+        "aiosqlite==0.22.1",
+        "discord-py==2.7.1",
+        "pillow==12.2.0",
+        "snapcogs",
+    ]
+    name = "zenyatta"
+    requires-python = ">=3.11"
+    version = "0.1.0"
+
+[tool.uv.sources]
+    snapcogs = { git = "https://github.com/Snaptraks/SnapCogs.git", rev = "aiosqlite" }
