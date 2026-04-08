@@ -17,7 +17,6 @@ def main():
         "cogs.General",
         "snapcogs.Admin",
         "snapcogs.Fun",
-        "snapcogs.Poll",
         "snapcogs.Roles",
         "snapcogs.Information",
         "snapcogs.Tips",
