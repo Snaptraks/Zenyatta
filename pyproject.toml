@@ -2,7 +2,7 @@
     dependencies = [
         "aiosqlite==0.22.1",
         "discord-py==2.7.1",
-        "pillow==12.2.0",
+        "pillow==12.3.0",
         "snapcogs",
     ]
     name = "zenyatta"
